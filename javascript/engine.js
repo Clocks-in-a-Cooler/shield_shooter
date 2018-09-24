@@ -133,25 +133,35 @@ var Engine = (function() {
             m_ship.style.left = Mothership.x + "px";
             game_div.appendChild(m_ship);
 
+            //filter out the shooters that aren't active
+            shooters = shooters.filter(function(shooter) { return shooter.active; });
+            //draw the remaining ones
+            for (var qz = 0; qz < shooters.length; qz = qz + 1) {
+                var shooter = shooters[qz];
+                shooter.get_new_position(lapse);
+                var shooter_elt = create_element("div", "shooter");
+                shooter_elt.style.top = shooter.y + "px";
+                shooter_elt.style.left = shooter.x + "px";
+
+                game_div.appendChild(shooter_elt);
+            }
+
             //animation loop
             requestAnimationFrame(Engine.animate);
         },
 
+        add_shooter: function() {
+            //it will only support one, for now
+            shooters.push(new Shooter(Mothership.x, Mothership.y + 100, 0));
+        },
+
         //getter properties for cursor positions
-        get cursor_x() {
-            return cursor.x;
-        },
+        get cursor_x() { return cursor.x; },
 
-        get cursor_y() {
-            return cursor.y;
-        },
+        get cursor_y() { return cursor.y; },
 
-        get game_area_x() {
-            return window.innerWidth;
-        },
+        get game_area_x() { return window.innerWidth; },
 
-        get game_area_y() {
-            return window.innerHeight;
-        },
+        get game_area_y() { return window.innerHeight; },
     };
 })();
