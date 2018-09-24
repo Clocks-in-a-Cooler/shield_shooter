@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    </head>
+    <body>
+        <script>
+            //helper function for creating elements, for drawing
+            function create_element(name, class_name) {
+                var e = document.createElement(name);
+                if (class_name) {
+                    var a = document.createAttribute('class');
+                    a.value = class_name;
+                    e.setAttributeNode(a);
+                }
+
+                return e;
+            }
+        </script>
+
+        <!-- load the types first -->
+        <script src="javascript/engine.js"></script>
+        <script src="javascript/bullet.js"></script>
+        <script src="javascript/shooter.js"></script>
+        <script src="javascript/mothership.js"></script>
+
+        <script>
+            //for anything that needs to happen after all of the scripts have been loaded.
+            Engine.init();
+
+            //starts the game
+            requestAnimationFrame(Engine.animate);
+        </script>
+    </body>
+</html>
