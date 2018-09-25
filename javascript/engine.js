@@ -144,6 +144,23 @@ var Engine = (function() {
                 shooter_elt.style.left = shooter.x + "px";
 
                 game_div.appendChild(shooter_elt);
+                
+                //shoot, if it's loaded.
+                if (shooters[qz].loaded && click % 2 == 1) {
+                    bullets.push(shooters[qz].fire());
+                }
+            }
+            
+            bullets = bullets.filter(function(bullet) {return bullet.active;});
+            
+            for (var qa = 0; qa < bullets.length; qa++) {
+                var bullet = bullets[qa];
+                bullet.get_new_position(lapse);
+                var bullet_elt = create_element("div", "bullet");
+                bullet_elt.style.top = bullet.y + "px";
+                bullet_elt.style.left = bullet.x + "px";
+                
+                game_div.appendChild(bullet_elt);
             }
 
             //animation loop
@@ -163,5 +180,7 @@ var Engine = (function() {
         get game_area_x() { return window.innerWidth; },
 
         get game_area_y() { return window.innerHeight; },
+        
+        get shooters() { return shooters;},
     };
 })();

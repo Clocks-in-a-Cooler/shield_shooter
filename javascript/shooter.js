@@ -6,16 +6,22 @@ function Shooter(x, y, angle) {
 
     this.speed = 0.2;
     this.offset = 12.5; //half of the length or width
-    this.last_shot = null;
-    this.cooldown = 1000; //in milliseconds
+    this.loaded = true;
+    this.cooldown = 500; //in milliseconds
     this.active = true;
 
     Engine.log("a new shooter has been created at " + this.x + ", " + this.y);
 }
 
 Shooter.prototype.fire = function(time) {
-    if (time - this.last_shot >= this.cooldown || this.last_shot == null) {
-        this.last_shot = time;
+    var s = this;
+    if (this.loaded == true) {
+        this.loaded = false;
+        Engine.log("shot a bullet.");
+        setTimeout(function() {
+            s.loaded = true;
+            Engine.log("reloaded: " + s.loaded);
+        }, s.cooldown);
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
 };
