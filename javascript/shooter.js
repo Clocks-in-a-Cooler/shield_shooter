@@ -1,7 +1,7 @@
 function Shooter(x, y, angle) {
-    this.x = x;
-    this.y = y;
-    this.angle = angle;
+    this.x     = x;
+    this.y     = y;
+    this.angle = angle || 0;
     //this.o_angle = angle; //this will never change, and you will soon see why
 
     this.speed = 0.2;
@@ -17,10 +17,8 @@ Shooter.prototype.fire = function(time) {
     var s = this;
     if (this.loaded == true) {
         this.loaded = false;
-        Engine.log("shot a bullet.");
         setTimeout(function() {
             s.loaded = true;
-            Engine.log("reloaded: " + s.loaded);
         }, s.cooldown);
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
@@ -37,4 +35,10 @@ Shooter.prototype.get_new_position = function(lapse) {
     //then calculate where the shooter will actually go to
     this.x += (should_x - this.x - this.offset) * this.speed;
     this.y += (should_y - this.y - this.offset) * this.speed;
+};
+
+Shooter.prototype.collision = function() {
+    //what happens when you get hit by an enemy?
+    this.active = false;
+    //you're dead, that's what.
 };

@@ -27,10 +27,16 @@
 
         <script>
             //for anything that needs to happen after all of the scripts have been loaded.
-            Engine.init();
-
-            //starts the game
-            requestAnimationFrame(Engine.animate);
+            //Engine.init();
+            
+            function start() {
+                Engine.init();
+                Engine.start_game();
+            }
         </script>
+        <h1>Shield Shooter</h1>
+        <p>WASD or Arrow keys to move. Click to shoot.</p>
+        <p>Don't let the squares touch you or your shooters.</p>
+        <button onclick="start()">start</button>
     </body>
 </html>

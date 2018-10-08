@@ -23,10 +23,14 @@ var Engine = (function() {
     //state of the keys are stored in MOTHERSHIP
 
     //to store stuff
-    var shooters = [], bullets = [];
+    var shooters = [], bullets = [], enemies = [];
 
     //for animation
     var last_time = null, lapse = 0;
+    
+    //for the game
+    var difficulty = 0; //good luck
+    var score      = 0; //good luck
 
     return {
         start_logging: function() { logging = true; },
@@ -121,7 +125,7 @@ var Engine = (function() {
             //animation code below
             //basically, ask the mothership, the shooters, and each bullet where it should be.
             //draw them there.
-            //if they're outside the windows, don't draw them.
+            //if they are outside the windows, don't draw them.
 
             //clear the screen first
             game_div.innerHTML = "";
@@ -167,9 +171,18 @@ var Engine = (function() {
             requestAnimationFrame(Engine.animate);
         },
 
-        add_shooter: function() {
+        add_shooter: function(shooter) {
             //it will only support one, for now
-            shooters.push(new Shooter(Mothership.x, Mothership.y + 100, 0));
+            shooters.push(shooter || new Shooter(Mothership.x, Mothership.y, 0));
+        },
+        
+        start_game: function() {
+            for (var a = 0; a < 2 * Math.PI; a += 0.25 * Math.PI) {
+                Engine.add_shooter(new Shooter(Mothership.x, Mothership.y, a));
+            }
+            
+            //start the animation...
+            requestAnimationFrame(this.animate);
         },
 
         //getter properties for cursor positions
@@ -182,5 +195,9 @@ var Engine = (function() {
         get game_area_y() { return window.innerHeight; },
         
         get shooters() { return shooters;},
+        
+        get bullets() {return bullets;},
+        
+        get enemies() {return enemies;},
     };
 })();

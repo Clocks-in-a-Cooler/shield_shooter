@@ -27,7 +27,11 @@ Bullet.prototype.get_new_position = function(lapse) {
     this.x += this.vector.x * lapse * this.speed;
     this.y += this.vector.y * lapse * this.speed;
 
-    if (this.x < 0 || this.y < 0 || this.x > Engine.game_area_x || this.y > Engine.area_y) {
+    if (this.x < 0 || this.y < 0) {
+        this.active = false;
+    }
+    
+    if (this.x > Engine.game_area_x || this.y > Engine.game_area_y) {
         this.active = false;
     }
 };
