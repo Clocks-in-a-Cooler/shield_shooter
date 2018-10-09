@@ -15,10 +15,23 @@ Enemy.prototype.get_new_position = function(lapse) {
     if (this.x < 0 || this.x > Engine.game_area_x) {
         this.v_x = -1 * this.v_x;
     }
-    
+     
     if (this.y < 0 || this.y > Engine.game_area_y) {
         this.v_y = -1 * this.v_y;
     }
+    
+    //check for collisions with things like bullets or shooters
+    
+    //bullet collision check
+    var bullets = Engine.bullets.filter(function(bullet) {
+        var same_x = (bullet.x > this.x - this.offset) && (bullet.x < this.x + this.offset);
+        var same_y = (bullet.y > this.y - this.offset) && (bullet.y < this.y + this.offset);
+        return same_x && same_y;
+    });
+    //do something for the bullet
+    bullets.foreach(function(bullet) {
+        bullet.collision();
+    });
 }
 
 //getting the object collision between a circle and a square is hard, okay?
@@ -29,5 +42,5 @@ Enemy.prototype.get_collision = function(c_x, c_y, radius) {
     
     return (s_dist >= a_dist);
     
-    //this function requires debugging
+    //this function will require debugging
 }

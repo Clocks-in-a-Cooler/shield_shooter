@@ -29,8 +29,9 @@ var Engine = (function() {
     var last_time = null, lapse = 0;
     
     //for the game
-    var difficulty = 0; //good luck
-    var score      = 0; //good luck
+    var difficulty    = 0; //good luck
+    var score         = 0; //good luck
+    var score_element = create_element("p", "score");
 
     return {
         start_logging: function() { logging = true; },
@@ -112,6 +113,8 @@ var Engine = (function() {
 
             //draw background, which will also serve as a wrapper for everything else
             document.body.appendChild(game_div);
+            document.body.appendChild(score_element);
+            this.update_score();
 
             Mothership.init();
         },
@@ -123,7 +126,7 @@ var Engine = (function() {
             last_time = time;
 
             //animation code below
-            //basically, ask the mothership, the shooters, and each bullet where it should be.
+            //basically, ask the mothership, the shooters, each bullet and each enemy where it should be.
             //draw them there.
             //if they are outside the windows, don't draw them.
 
@@ -184,8 +187,13 @@ var Engine = (function() {
             //start the animation...
             requestAnimationFrame(this.animate);
         },
+        
+        //updating the score each frame is asking for a system crash.
+        update_score: function() { score_element.innerHTML = "score: " + score; },
+        
+        add_score: function() { score = score + 1; this.update_score();},
 
-        //getter properties for cursor positions
+        //getter properties
         get cursor_x() { return cursor.x; },
 
         get cursor_y() { return cursor.y; },
@@ -199,5 +207,7 @@ var Engine = (function() {
         get bullets() {return bullets;},
         
         get enemies() {return enemies;},
+        
+        get score() {return score;}
     };
 })();
