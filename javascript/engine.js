@@ -163,11 +163,22 @@ var Engine = (function() {
             for (var qa = 0; qa < bullets.length; qa++) {
                 var bullet = bullets[qa];
                 bullet.get_new_position(lapse);
-                var bullet_elt = create_element("div", "bullet");
-                bullet_elt.style.top = bullet.y + "px";
-                bullet_elt.style.left = bullet.x + "px";
+                var bullet_elt        = create_element("div", "bullet");
+                bullet_elt.style.top  = bullet.y - bullet.offset + "px";
+                bullet_elt.style.left = bullet.x - bullet.offset + "px";
                 
                 game_div.appendChild(bullet_elt);
+            }
+            
+            enemies = enemies.filter(function(enemy) {return enemy.active;});
+            for (var qb = 0; qb < enemies.length; qb++) {
+                var enemy = enemies[qb];
+                enemy.get_new_position(lapse);
+                var enemy_elt        = create_element("div", "enemy");
+                enemy_elt.style.top  = enemy.y - enemy.offset + "px";
+                enemy_elt.style.left = enemy.x - enemy.offset + "px";
+                
+                game_div.appendChild(enemy_elt);
             }
 
             //animation loop
@@ -177,6 +188,10 @@ var Engine = (function() {
         add_shooter: function(shooter) {
             //it will only support one, for now
             shooters.push(shooter || new Shooter(Mothership.x, Mothership.y, 0));
+        },
+        
+        add_enemy: function(enemy) {
+            enemies.push(enemy || new Enemy(0, 0, Math.sqrt(0.5), Math.sqrt(0.5)));
         },
         
         start_game: function() {

@@ -7,8 +7,8 @@ var Mothership = (function() {
     var offset = 37.5;
 
     var maximum_shooters = 8;
-    var angles = [0, 0.25 * Math.PI, 0.5 * Math.PI, 0.75 * Math.PI, Math.PI, 1.25 * Math.PI, 1.5 * Math.PI, 1.75 * Math.PI, 2 * Math.PI];
-    var speed = 0.1;
+    var angles           = [0, 0.25 * Math.PI, 0.5 * Math.PI, 0.75 * Math.PI, Math.PI, 1.25 * Math.PI, 1.5 * Math.PI, 1.75 * Math.PI, 2 * Math.PI];
+    var speed            = 0.3;
 
     return {
         init: function() {
@@ -31,9 +31,11 @@ var Mothership = (function() {
 
         vector: {x: 0, y: 0,},
 
-        get x() { return pos.x - offset; },
+        get x() { return pos.x - offset;},
 
-        get y() { return pos.y - offset; },
+        get y() { return pos.y - offset;},
+        
+        get offset() {return offset;},
 
         get orbit_radius() { return 100; }, //how far the shooters orbit the mothership
     };

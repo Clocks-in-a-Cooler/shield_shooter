@@ -26,6 +26,12 @@ div.bullet {
     background-color: powderblue;
 }
 
+div.enemy {
+    position: absolute;
+    width: 25px; height: 25px;
+    background-color: white;
+}
+
 p.score {
     position: fixed;
     top: 10px; right: 10px;
