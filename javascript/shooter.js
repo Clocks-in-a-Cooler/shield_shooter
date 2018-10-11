@@ -4,11 +4,11 @@ function Shooter(x, y, angle) {
     this.angle = angle || 0;
     //this.o_angle = angle; //this will never change, and you will soon see why
 
-    this.speed = 0.2;
-    this.offset = 12.5; //half of the length or width
-    this.loaded = true;
+    this.speed    = 0.3;
+    this.offset   = 12.5; //half of the length or width
+    this.loaded   = true;
     this.cooldown = 500; //in milliseconds
-    this.active = true;
+    this.active   = true;
 
     Engine.log("a new shooter has been created at " + this.x + ", " + this.y);
 }

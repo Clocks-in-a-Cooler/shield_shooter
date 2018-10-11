@@ -32,6 +32,16 @@ var Engine = (function() {
     var difficulty    = 0; //good luck
     var score         = 0; //good luck
     var score_element = create_element("p", "score");
+    
+    //powerups
+    var rapid_fire       = false;
+    var bouncing_bullets = false;
+    var piercing_shots   = false;
+    var invincibility    = false;
+    var fragile_enemies  = false;
+    
+    //each powerup lasts for 7.5 seconds. enjoy it while you can!
+    var power_up_duration = 7500;
 
     return {
         start_logging: function() { logging = true; },
@@ -203,10 +213,60 @@ var Engine = (function() {
             requestAnimationFrame(this.animate);
         },
         
-        //updating the score each frame is asking for a system crash.
+        //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
         update_score: function() { score_element.innerHTML = "score: " + score; },
         
         add_score: function() { score = score + 1; this.update_score();},
+        
+        activate_power_up: function(power_up) {
+            switch (power_up) {
+                //debug! sorry for the long base statements.
+                case "rapid fire":
+                    Engine.log("activating 'rapid fire' powerup...");
+                    rapid_fire = true;
+                    setTimeout(function() {
+                        rapid_fire = false;
+                        Engine.log("deactivating 'rapid fire' powerup...");
+                    }, power_up_duration);
+                    break;
+                case "bouncing bullets":
+                    Engine.log("activating 'bouncing bullets' powerup...");
+                    bouncing_bullets = true;
+                    setTimeout(function() {
+                        bouncing_bullets = false;
+                        Engine.log("deactivating 'bouncing bullets' powerup...");
+                    }, power_up_duration);
+                    break;
+                case "piercing shots": 
+                    Engine.log("activating 'piercing shots' powerup...");
+                    piercing_shots = true;
+                    setTimeout(function() {
+                        piercing_shots = false;
+                        Engine.log("deactivating 'piercing shots' powerup...");
+                    }, power_up_duration);
+                    break;
+                case "invincibility":
+                    Engine.log("activating 'invincibility' powerup...");
+                    invincibility = true;
+                    setTimeout(function() {
+                        invincibility = false;
+                        Engine.log("deactivating 'invincibility' powerup...");
+                    }, power_up_duration);
+                    break;
+                case "fragile enemies":
+                    Engine.log("activating 'fragile enemies' powerup...");
+                    fragile_enemies = true;
+                    setTimeout(function() {
+                        fragile_enemies = false;
+                        Engine.log("deactivating 'fragile enemies' powerup...");
+                    }, power_up_duration);
+                    break;
+                default:
+                    Engine.log("unrecognized powerup '" + power_up + "' -- what is this?");
+            }
+            
+            //all that's missing is a function for creating powerups!
+        },
 
         //getter properties
         get cursor_x() { return cursor.x; },
@@ -216,6 +276,8 @@ var Engine = (function() {
         get game_area_x() { return window.innerWidth; },
 
         get game_area_y() { return window.innerHeight; },
+        
+        get shooter_cooldown() { return shooter_cooldown; },
         
         get shooters() { return shooters;},
         
