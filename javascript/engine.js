@@ -257,6 +257,11 @@ var Engine = (function() {
             requestAnimationFrame(this.animate);
         },
         
+        end_game: function() {
+            //end the game
+            Engine.toggle_pause();
+        },
+        
         //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
         update_score: function() { score_element.innerHTML = "score: " + score; },
         
@@ -310,6 +315,40 @@ var Engine = (function() {
             }
             
             //all that's missing is a function for creating powerups!
+        },
+        
+        spawn_enemies: function() {
+            
+            for (var vsc = 0; vsc <= score + 1; vsc++) {
+                //pick a random point on the sides
+                var spawn_x = (function() {
+                    if (Math.random() < 0.5) {
+                        return 0;
+                    } else {
+                        return Engine.game_area_x;
+                    }
+                })();
+                
+                var spawn_y = Math.random() * Engine.game_area_y;
+                
+                var vector_x = (function() {
+                    if (Math.random < 0.5) {
+                        return 0.707;
+                    } else {
+                        return -0.707;
+                    }
+                })();
+                
+                var vector_y = (function() {
+                    if (Math.random < 0.5) {
+                        return 0.707;
+                    } else {
+                        return -0.707;
+                    }
+                })();
+                
+                Engine.add_enemy(new Enemy(spawn_x, spawn_y, vector_x, vector_y));
+            }
         },
 
         //getter properties

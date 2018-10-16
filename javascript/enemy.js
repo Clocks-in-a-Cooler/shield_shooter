@@ -29,26 +29,49 @@ Enemy.prototype.get_new_position = function(lapse) {
         this.v_y = -this.v_y;
     }
     
+    var b         = this;
+    var collision = false;
+    
     //check for collisions with things like bullets or shooters
-    /*
-    //bullet collision check
     var bullets = Engine.bullets.filter(function(bullet) {
-        var same_x = (bullet.x > this.x - this.offset) && (bullet.x < this.x + this.offset);
-        var same_y = (bullet.y > this.y - this.offset) && (bullet.y < this.y + this.offset);
-        return same_x && same_y;
+        var same_x = (bullet.x > b.x - 12.5) && (bullet.x < b.x + 12.5);
+        var same_y = (bullet.y > b.y - 12.5) && (bullet.y < b.y + 12.5);
+        
+        return (same_x && same_y);
     });
-    //do something for the bullet
-    bullets.foreach(function(bullet) {
+    
+    bullets.forEach(function(bullet) {
         bullet.collision();
+        collision = true;
     });
-    */
+    
+    //shooters collision    
+    var shooters = Engine.shooters.filter(function(shooter) {
+        return b.get_collision(shooter.x, shooter.y, shooter.offset);
+    });
+    
+    shooters.forEach(function(shooter) {
+        shooter.collision();
+        collision = true;
+    });
+    
+    //check collision with mothership
+    if (this.get_collision(Mothership.x, Mothership.y, 37.5)) {
+        Engine.log("Player has lost.");
+        Engine.end_game();
+    }
+    
+    if (collision) {
+        this.active = false;
+        Engine.add_score();
+    }
 }
 
 //getting the object collision between a circle and a square is hard, okay?
 Enemy.prototype.get_collision = function(c_x, c_y, radius) {
-    var angle  = Math.atan((this.y - c_y) / (this.x - c_x));
-    var s_dist = (this.offset + radius) / Math.sin(angle);
-    var a_dist = Math.hypot((this.x - c_x), (this.y - c_y));
+    var angle  = Math.atan(Math.abs(this.y - c_y) / Math.abs(this.x - c_x));
+    var s_dist = (12.5 + radius) / 2 * Math.sin(angle); //closest allowable distance
+    var a_dist = Math.hypot((this.x - c_x), (this.y - c_y)); //actual distance between the shooter and the enemy
     
     return (s_dist >= a_dist);
     
