@@ -23,8 +23,6 @@ var Mothership = (function() {
             //limit the mothership at the edges of the screen
             pos.x = Math.min(Engine.game_area_x - offset, Math.max(offset, pos.x));
             pos.y = Math.min(Engine.game_area_y - offset, Math.max(offset, pos.y));
-
-            //return { x: pos.x, y: pos.y, };
         },
 
         has_room: function(num) { return (num < maximum_shooters); },

@@ -21,11 +21,11 @@ Enemy.prototype.get_new_position = function(lapse) {
         this.v_y = -this.v_y;
     }
     
-    if (this.x >= Engine.game_area_x && this.v_x > 0) {
+    if (this.x >= Engine.game_area_x - 25 && this.v_x > 0) {
         this.v_x = -this.v_x;
     }
     
-    if (this.y >= Engine.game_area_y && this.v_y > 0) {
+    if (this.y >= Engine.game_area_y - 25 && this.v_y > 0) {
         this.v_y = -this.v_y;
     }
     

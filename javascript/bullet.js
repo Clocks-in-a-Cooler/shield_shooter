@@ -4,7 +4,7 @@ function Bullet(x, y, cx, cy) {
     this.active = true;
 
     this.vector = this.get_vector(x, y, cx, cy);
-    this.speed  = 0.3;
+    this.speed  = (Engine.rapid_fire ? 0.7 : 0.3);
     this.offset = 5;
 }
 
@@ -29,11 +29,19 @@ Bullet.prototype.get_new_position = function(lapse) {
     this.y += this.vector.y * lapse * this.speed;
     
     if (this.x < 0 || this.y < 0) {
-        this.active = false;
+        if (Engine.bouncing_bullets) {
+            this.bounce();
+        } else {
+            this.active = false;
+        }
     }
     
     if (this.x > Engine.game_area_x || this.y > Engine.game_area_y) {
-        this.active = false;
+        if (Engine.bouncing_bullets) {
+            this.bounce();
+        } else {
+            this.active = false;
+        }
     }
 };
 
@@ -53,11 +61,11 @@ Bullet.prototype.bounce = function() {
         this.vector.y = -this.vector.y;
     }
     
-    if (this.x >= Engine.game_area_x && this.vector.x > 0) {
+    if (this.x >= Engine.game_area_x - 10 && this.vector.x > 0) {
         this.vector.x = -this.vector.x;
     }
     
-    if (this.y >= Engine.game_area_y && this.vector.y > 0) {
+    if (this.y >= Engine.game_area_y - 10 && this.vector.y > 0) {
         this.vector.y = -this.vector.y;
     }
 };

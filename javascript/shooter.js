@@ -19,7 +19,7 @@ Shooter.prototype.fire = function(time) {
         this.loaded = false;
         setTimeout(function() {
             s.loaded = true;
-        }, s.cooldown);
+        }, (Engine.rapid_fire ? s.cooldown / 3 : s.cooldown));
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
 };

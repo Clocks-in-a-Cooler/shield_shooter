@@ -32,9 +32,15 @@ div.enemy {
     background-color: white;
 }
 
-p.score {
+div.infos {
     position: fixed;
     top: 10px; right: 10px;
+    padding: 10px; margin: 0px; border: 0px;
+}
+
+p.info {
+    display: block;
+    margin: 0px; border: 0px; padding: 0px;
     color: white;
-    font-family: sans-serif;
+    font-family: sans-serif; font-size: 11pt;
 }

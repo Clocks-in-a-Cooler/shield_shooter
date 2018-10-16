@@ -1,12 +1,15 @@
 /* ---------------------------- new engine ------------------------------------------ */
 var Engine = (function() {
-    var logging = true;
+    var logging   = true;
+    var debugging = true;
 
     //stores cursor's position from the top left corner; x corresponds to left-right; y corresponds to up-down
     var cursor = {
         x: 0,
         y: 0,
     };
+    
+    var infos_div = create_element("div", "infos");
 
     var click = 0; //click state
 
@@ -26,12 +29,14 @@ var Engine = (function() {
     var shooters = [], bullets = [], enemies = [];
 
     //for animation
-    var last_time = null, lapse = 0;
+    var last_time  = null, lapse = 0;
+    var paused     = false;
+    var num_frames = 0;
     
     //for the game
     var difficulty    = 0; //good luck
     var score         = 0; //good luck
-    var score_element = create_element("p", "score");
+    var score_element = create_element("p", "info");
     
     //powerups
     var rapid_fire       = false;
@@ -41,7 +46,7 @@ var Engine = (function() {
     var fragile_enemies  = false;
     
     //each powerup lasts for 7.5 seconds. enjoy it while you can!
-    var power_up_duration = 7500;
+    var power_up_duration = 10000;
 
     return {
         start_logging: function() { logging = true; },
@@ -118,23 +123,45 @@ var Engine = (function() {
                     case 39:
                         Mothership.vector.x = 0;
                         break;
+                    case 80: //"P" key, for pausing
+                        Engine.toggle_pause();
+                        break;
                 }
             });
 
             //draw background, which will also serve as a wrapper for everything else
             document.body.appendChild(game_div);
-            document.body.appendChild(score_element);
+            document.body.appendChild(infos_div);
+            infos_div.appendChild(score_element);
             this.update_score();
+            
+            if (debugging) {
+                this.debug();
+            }
 
             Mothership.init();
         },
+        
+        debug: function() {
+            //add frame rate counter, and other informations
+            var frame_rate_p       = create_element("p", "info");
+            frame_rate_p.innerHTML = "frame rate: loading...";
+            infos_div.appendChild(frame_rate_p);
+            
+            var num_bullets_p       = create_element("p", "info");
+            num_bullets_p.innerHTML = "bullets: loading...";
+            infos_div.appendChild(num_bullets_p);
+            
+            setInterval(function() {
+                //update the frame rate counter
+                frame_rate_p.innerHTML = "frame rate: " + num_frames;
+                num_frames             = 0;
+                
+                num_bullets_p.innerHTML = "bullets: " + bullets.length;
+            }, 1000);
+        },
 
-        animate: function(time) {
-            if (last_time != null) {
-                lapse = time - last_time;
-            }
-            last_time = time;
-
+        draw_screen: function(lapse) {
             //animation code below
             //basically, ask the mothership, the shooters, each bullet and each enemy where it should be.
             //draw them there.
@@ -190,9 +217,26 @@ var Engine = (function() {
                 
                 game_div.appendChild(enemy_elt);
             }
-
-            //animation loop
+        },
+        
+        animate: function(time) {
+            if (last_time == null) {
+                lapse = 0;
+            } else {
+                lapse = time - last_time;
+            }
+            
+            last_time = time;
+            if (!paused) {
+                Engine.draw_screen(lapse);
+                num_frames++;
+            }
+            
             requestAnimationFrame(Engine.animate);
+        },
+        
+        toggle_pause: function() {
+            paused = !paused;
         },
 
         add_shooter: function(shooter) {
@@ -272,6 +316,10 @@ var Engine = (function() {
         get cursor_x() { return cursor.x; },
 
         get cursor_y() { return cursor.y; },
+        
+        get num_frames() {return num_frames; },
+        
+        get infos() {return infos_div; },
 
         get game_area_x() { return window.innerWidth; },
 
@@ -285,6 +333,16 @@ var Engine = (function() {
         
         get enemies() {return enemies;},
         
-        get score() {return score;}
+        get score() {return score;},
+        
+        get rapid_fire() { return rapid_fire; },
+        
+        get bouncing_bullets() { return bouncing_bullets; },
+        
+        get piercing_shots() { return piercing_shots; },
+        
+        get invincibility() { return invincibility; },
+        
+        get fragile_enemies() { return fragile_enemies; },
     };
 })();
