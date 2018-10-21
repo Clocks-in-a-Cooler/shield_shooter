@@ -54,12 +54,13 @@ Enemy.prototype.get_new_position = function(lapse) {
         shooter.collision();
         collision = true;
     });
-    
+    /*
     //check collision with mothership
     if (this.get_collision(Mothership.x, Mothership.y, 37.5)) {
         Engine.log("Player has lost.");
-        Engine.end_game();
+        Mothership.collision();
     }
+    */
     
     if (collision) {
         this.active = false;
@@ -67,13 +68,23 @@ Enemy.prototype.get_new_position = function(lapse) {
     }
 }
 
+Enemy.prototype.draw = function(context) {
+    context.drawImage(Assets.enemy, (this.x - this.offset), (this.y - this.offset));
+};
+
 //getting the object collision between a circle and a square is hard, okay?
 Enemy.prototype.get_collision = function(c_x, c_y, radius) {
-    var angle  = Math.atan(Math.abs(this.y - c_y) / Math.abs(this.x - c_x));
-    var s_dist = (12.5 + radius) / 2 * Math.sin(angle); //closest allowable distance
-    var a_dist = Math.hypot((this.x - c_x), (this.y - c_y)); //actual distance between the shooter and the enemy
+    var dist_x = Math.abs(c_x - this.x - this.offset);
+    var dist_y = Math.abs(c_y - this.y - this.offset);
     
-    return (s_dist >= a_dist);
+    if (dist_x > (this.offset + radius)) { return false; }
+    if (dist_y > (this.offset + radius)) { return false; }
     
-    //this function will require debugging
+    if (dist_x <= this.offset) { return true; }
+    if (dist_y <= this.offset) { return true; }
+    
+    var dx = dist_x - this.offset;
+    var dy = dist_y - this.offset;
+    
+    return ((dx * dx + dy * dy) <= (radius * radius));
 }

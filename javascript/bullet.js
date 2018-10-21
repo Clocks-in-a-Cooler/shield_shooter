@@ -45,10 +45,16 @@ Bullet.prototype.get_new_position = function(lapse) {
     }
 };
 
+Bullet.prototype.draw = function(context) {
+    context.drawImage(Assets.bullet, (this.x - this.offset), (this.y - this.offset));
+};
+
 //also add something to detect collision, and deactivate the bullet
 Bullet.prototype.collision = function() {
     //enemies handle the collision detection part, since I'm lazy
-    this.active = false;
+    if (!Engine.piercing_shots) {
+        this.active = false;
+    }
 };
 
 Bullet.prototype.bounce = function() {

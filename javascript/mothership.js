@@ -28,6 +28,16 @@ var Mothership = (function() {
         has_room: function(num) { return (num < maximum_shooters); },
 
         vector: {x: 0, y: 0,},
+        
+        collision: function() {
+            if (!Engine.invicibility) {
+                Engine.end_game();
+            }
+        },
+        
+        draw: function(context) {
+            context.drawImage(Assets.mothership, this.x, this.y);
+        },
 
         get x() { return pos.x - offset;},
 

@@ -37,8 +37,14 @@ Shooter.prototype.get_new_position = function(lapse) {
     this.y += (should_y - this.y - this.offset) * this.speed;
 };
 
+Shooter.prototype.draw = function(context) {
+    context.drawImage(Assets.shooter, (this.x - this.offset), (this.y - this.offset));
+};
+
 Shooter.prototype.collision = function() {
     //what happens when you get hit by an enemy?
-    this.active = false;
-    //you're dead, that's what.
+    if (!Engine.invincibility) {
+        this.active = false;
+        //you're dead, that's what.
+    }
 };

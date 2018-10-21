@@ -22,6 +22,8 @@ var Engine = (function() {
 
         return g;
     })();
+    
+    var canvas = create_element("canvas", "game");
 
     //state of the keys are stored in MOTHERSHIP
 
@@ -130,7 +132,7 @@ var Engine = (function() {
             });
 
             //draw background, which will also serve as a wrapper for everything else
-            document.body.appendChild(game_div);
+            document.body.appendChild(canvas);
             document.body.appendChild(infos_div);
             infos_div.appendChild(score_element);
             this.update_score();
@@ -139,7 +141,7 @@ var Engine = (function() {
                 this.debug();
             }
 
-            Mothership.init();
+            //Mothership.init();
         },
         
         debug: function() {
@@ -179,44 +181,49 @@ var Engine = (function() {
 
             //filter out the shooters that aren't active
             shooters = shooters.filter(function(shooter) { return shooter.active; });
-            //draw the remaining ones
-            for (var qz = 0; qz < shooters.length; qz = qz + 1) {
-                var shooter = shooters[qz];
-                shooter.get_new_position(lapse);
-                var shooter_elt = create_element("div", "shooter");
-                shooter_elt.style.top = shooter.y + "px";
-                shooter_elt.style.left = shooter.x + "px";
+            //draw the remaining ones; sorry for using "with"
+            shooters.forEach(function(shooter) {
+                with (shooter) {
+                    get_new_position(lapse);
+                
+                    var shooter_elt        = create_element("div", "shooter");
+                    shooter_elt.style.top  = y + "px";
+                    shooter_elt.style.left = x + "px";
 
-                game_div.appendChild(shooter_elt);
-                
-                //shoot, if it's loaded.
-                if (shooters[qz].loaded && click % 2 == 1) {
-                    bullets.push(shooters[qz].fire());
+                    game_div.appendChild(shooter_elt);
+                    
+                    if (loaded && click % 2 == 1) {
+                        bullets.push(fire());
+                    }
                 }
-            }
+            });
             
+            //do the same thing with bullets
             bullets = bullets.filter(function(bullet) {return bullet.active;});
+            bullets.forEach(function(bullet) {
+                with (bullet) {
+                    get_new_position(lapse);
+                    var bullet_elt        = create_element("div", "bullet");
+                    bullet_elt.style.top  = y + "px";
+                    bullet_elt.style.left = x + "px";
+                    
+                    game_div.appendChild(bullet_elt);
+                }
+            });
             
-            for (var qa = 0; qa < bullets.length; qa++) {
-                var bullet = bullets[qa];
-                bullet.get_new_position(lapse);
-                var bullet_elt        = create_element("div", "bullet");
-                bullet_elt.style.top  = bullet.y - bullet.offset + "px";
-                bullet_elt.style.left = bullet.x - bullet.offset + "px";
-                
-                game_div.appendChild(bullet_elt);
-            }
-            
+            //... and the same thing for enemies
             enemies = enemies.filter(function(enemy) {return enemy.active;});
-            for (var qb = 0; qb < enemies.length; qb++) {
-                var enemy = enemies[qb];
-                enemy.get_new_position(lapse);
-                var enemy_elt        = create_element("div", "enemy");
-                enemy_elt.style.top  = enemy.y - enemy.offset + "px";
-                enemy_elt.style.left = enemy.x - enemy.offset + "px";
-                
-                game_div.appendChild(enemy_elt);
-            }
+            enemies.forEach(function(enemy) {
+                with (enemy) {
+                    get_new_position(lapse);
+                    
+                    var enemy_elt        = create_element("div", "enemy");
+                    enemy_elt.style.top  = y + "px";
+                    enemy_elt.style.left = x + "px";
+                    
+                    game_div.appendChild(enemy_elt);
+                }
+            });
         },
         
         animate: function(time) {
