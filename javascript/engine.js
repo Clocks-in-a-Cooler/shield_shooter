@@ -44,14 +44,14 @@ var Engine = (function() {
     var score_element = create_element("p", "info");
     
     //powerups
-    var rapid_fire       = false;
-    var bouncing_bullets = false;
+    var rapid_fire       = true;
+    var bouncing_bullets = true;
     var piercing_shots   = false;
     var invincibility    = false;
     var fragile_enemies  = false;
     
-    //each powerup lasts for 7.5 seconds. enjoy it while you can!
-    var power_up_duration = 7500;
+    //each powerup lasts for 60 seconds. enjoy it while you can!
+    var power_up_duration = 60000;
 
     return {
         start_logging: function() { logging = true; },

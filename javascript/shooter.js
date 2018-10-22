@@ -14,6 +14,7 @@ function Shooter(x, y, angle) {
 }
 
 Shooter.prototype.fire = function(time) {
+    /*
     var s = this;
     if (this.loaded == true) {
         this.loaded = false;
@@ -22,6 +23,8 @@ Shooter.prototype.fire = function(time) {
         }, (Engine.rapid_fire ? s.cooldown / 3 : s.cooldown));
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
+    */
+    return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
 };
 
 
