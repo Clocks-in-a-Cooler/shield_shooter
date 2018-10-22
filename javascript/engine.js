@@ -51,7 +51,7 @@ var Engine = (function() {
     var fragile_enemies  = false;
     
     //each powerup lasts for 7.5 seconds. enjoy it while you can!
-    var power_up_duration = 10000;
+    var power_up_duration = 7500;
 
     return {
         start_logging: function() { logging = true; },
@@ -166,6 +166,7 @@ var Engine = (function() {
             }, 1000);
         },
 
+        //OLD OLD OLD OLD OLD OLD OLD CRAPPY INEFFICIENT DON'T USE!!!
         draw_screen: function(lapse) {
             //animation code below
             //basically, ask the mothership, the shooters, each bullet and each enemy where it should be.

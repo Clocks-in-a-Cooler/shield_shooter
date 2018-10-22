@@ -24,6 +24,7 @@ Shooter.prototype.fire = function(time) {
     }
 };
 
+
 Shooter.prototype.get_new_position = function(lapse) {
     //get the position it should go to
     //Math.sin gives you the y co-ordinate
