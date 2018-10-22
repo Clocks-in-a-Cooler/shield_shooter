@@ -36,7 +36,7 @@ var Mothership = (function() {
         },
         
         draw: function(context) {
-            context.drawImage(Assets.mothership, this.x, this.y);
+            context.drawImage(Assets.mothership, pos.x - offset, pos.y - offset);
         },
 
         get x() { return pos.x - offset;},

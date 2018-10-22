@@ -23,7 +23,10 @@ var Engine = (function() {
         return g;
     })();
     
-    var canvas = create_element("canvas", "game");
+    var canvas    = create_element("canvas", "game");
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var cx        = canvas.getContext("2d");
 
     //state of the keys are stored in MOTHERSHIP
 
@@ -141,7 +144,7 @@ var Engine = (function() {
                 this.debug();
             }
 
-            //Mothership.init();
+            Mothership.init();
         },
         
         debug: function() {
@@ -226,6 +229,54 @@ var Engine = (function() {
             });
         },
         
+        draw_canvas: function(lapse) {
+            //animation code below
+            //basically, ask the mothership, the shooters, each bullet and each enemy where it should be.
+            //draw them there.
+            //if they are outside the windows, don't draw them.
+            
+            //first clear the canvas
+            cx.clearRect(0, 0, Engine.game_area_x, Engine.game_area_y);
+            
+            //draw the background
+            cx.fillStyle = "mediumslateblue";
+            cx.fillRect(0, 0, Engine.game_area_x, Engine.game_area_y);
+            
+            //draw the mothership
+            Mothership.get_new_position(lapse);
+            Mothership.draw(cx);
+            
+            //draw the shooters
+            shooters = shooters.filter(function(shooter) { return shooter.active; });
+            shooters.forEach(function(shooter) {
+                with (shooter) {
+                    get_new_position(lapse);
+                    draw(cx);
+                    if (loaded && click % 2 == 1) {
+                        bullets.push(fire());
+                    }
+                }
+            });
+            
+            //draw the bullets
+            bullets = bullets.filter(function(bullet) {return bullet.active;});
+            bullets.forEach(function(bullet) {
+                with (bullet) {
+                    get_new_position(lapse);
+                    draw(cx);
+                }
+            });
+            
+            //draw the enemies
+            enemies = enemies.filter(function(enemy) {return enemy.active;});
+            enemies.forEach(function(enemy) {
+                with (enemy) {
+                    get_new_position(lapse);
+                    draw(cx);
+                };
+            });
+        },
+        
         animate: function(time) {
             if (last_time == null) {
                 lapse = 0;
@@ -235,7 +286,7 @@ var Engine = (function() {
             
             last_time = time;
             if (!paused) {
-                Engine.draw_screen(lapse);
+                Engine.draw_canvas(lapse);
                 num_frames++;
             }
             

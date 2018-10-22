@@ -38,7 +38,7 @@ Shooter.prototype.get_new_position = function(lapse) {
 };
 
 Shooter.prototype.draw = function(context) {
-    context.drawImage(Assets.shooter, (this.x - this.offset), (this.y - this.offset));
+    context.drawImage(Assets.shooter, this.x, this.y);
 };
 
 Shooter.prototype.collision = function() {
