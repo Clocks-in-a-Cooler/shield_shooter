@@ -40,6 +40,8 @@ var Engine = (function() {
     
     //for the game
     var difficulty    = 0; //good luck
+    var max_enemies   = 2;
+    var spawn_delay   = 3500; //good luck
     var score         = 0; //good luck
     var score_element = create_element("p", "info");
     
@@ -240,7 +242,7 @@ var Engine = (function() {
             cx.clearRect(0, 0, Engine.game_area_x, Engine.game_area_y);
             
             //draw the background
-            cx.fillStyle = "mediumslateblue";
+            cx.fillStyle = "dimgray";
             cx.fillRect(0, 0, Engine.game_area_x, Engine.game_area_y);
             
             //draw the mothership
@@ -312,6 +314,8 @@ var Engine = (function() {
                 Engine.add_shooter(new Shooter(Mothership.x, Mothership.y, a));
             }
             
+            Engine.spawn_enemies();
+            
             //start the animation...
             requestAnimationFrame(this.animate);
         },
@@ -322,7 +326,20 @@ var Engine = (function() {
         },
         
         //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
-        update_score: function() { score_element.innerHTML = "score: " + score; },
+        update_score: function() {
+            score_element.innerHTML = "score: " + score;
+            
+            Engine.log("updating score... and everything else...");
+            
+            max_enemies = score + 1;
+            Engine.log("max enemies now: " + max_enemies);
+            
+            difficulty = 1 - ( 1 / score);
+            Engine.log("difficulty now: " + difficulty);
+            
+            spawn_delay = Math.floor(3500 / difficulty);
+            Engine.log("spawn delay now: " + spawn_delay);
+        },
         
         add_score: function() { score = score + 1; this.update_score();},
         
@@ -376,38 +393,46 @@ var Engine = (function() {
             //all that's missing is a function for creating powerups!
         },
         
-        spawn_enemies: function() {
+        create_enemy: function() {
+            //pick a random point on the sides
+            var spawn_x = (function() {
+                if (Math.random() < 0.5) {
+                    return 0;
+                } else {
+                    return Engine.game_area_x;
+                }
+            })();
             
-            for (var vsc = 0; vsc <= score + 1; vsc++) {
-                //pick a random point on the sides
-                var spawn_x = (function() {
-                    if (Math.random() < 0.5) {
-                        return 0;
-                    } else {
-                        return Engine.game_area_x;
-                    }
-                })();
-                
-                var spawn_y = Math.random() * Engine.game_area_y;
-                
-                var vector_x = (function() {
-                    if (Math.random < 0.5) {
-                        return 0.707;
-                    } else {
-                        return -0.707;
-                    }
-                })();
-                
-                var vector_y = (function() {
-                    if (Math.random < 0.5) {
-                        return 0.707;
-                    } else {
-                        return -0.707;
-                    }
-                })();
-                
-                Engine.add_enemy(new Enemy(spawn_x, spawn_y, vector_x, vector_y));
+            var spawn_y = Math.random() * Engine.game_area_y;
+            
+            var vector_x = (function() {
+                if (Math.random < 0.5) {
+                    return 0.707;
+                } else {
+                    return -0.707;
+                }
+            })();
+            
+            var vector_y = (function() {
+                if (Math.random < 0.5) {
+                    return 0.707;
+                } else {
+                    return -0.707;
+                }
+            })();
+            
+            Engine.add_enemy(new Enemy(spawn_x, spawn_y, vector_x, vector_y));
+        },
+        
+        spawn_enemies: function() {
+            if (Engine.enemies.length < max_enemies) {
+                Engine.log("creating enemy...");
+                Engine.create_enemy();
+            } else {
+                Engine.log("max reached! enemy not created!");
             }
+            
+            setTimeout(Engine.spawn_enemies, spawn_delay);
         },
 
         //getter properties
