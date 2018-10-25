@@ -1,7 +1,7 @@
 /* ---------------------------- new engine ------------------------------------------ */
 var Engine = (function() {
     var logging   = true;
-    var debugging = true;
+    var debugging = false;
 
     //stores cursor's position from the top left corner; x corresponds to left-right; y corresponds to up-down
     var cursor = {
