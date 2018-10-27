@@ -47,20 +47,19 @@ Enemy.prototype.get_new_position = function(lapse) {
     
     //shooters collision    
     var shooters = Engine.shooters.filter(function(shooter) {
-        return b.get_collision(shooter.x, shooter.y, shooter.offset);
+        return b.get_shooter_collision(shooter);
     });
     
     shooters.forEach(function(shooter) {
         shooter.collision();
         collision = true;
     });
-    /*
-    //check collision with mothership
-    if (this.get_collision(Mothership.x, Mothership.y, 37.5)) {
-        Engine.log("Player has lost.");
+    //check for mothership collision
+    if (this.get_mothership_collision()) {
         Mothership.collision();
+        collision = true;
+        Engine.log("mothership collision detected!");
     }
-    */
     
     if (collision) {
         this.active = false;
@@ -73,18 +72,16 @@ Enemy.prototype.draw = function(context) {
 };
 
 //getting the object collision between a circle and a square is hard, okay?
-Enemy.prototype.get_collision = function(c_x, c_y, radius) {
-    var dist_x = Math.abs(c_x - this.x - this.offset);
-    var dist_y = Math.abs(c_y - this.y - this.offset);
+Enemy.prototype.get_shooter_collision = function(shooter) {
+    var dist = (this.x - shooter.x) * (this.x - shooter.x) + (this.y - shooter.y) * (this.y - shooter.y);
+    dist     = Math.sqrt(dist);
     
-    if (dist_x > (this.offset + radius)) { return false; }
-    if (dist_y > (this.offset + radius)) { return false; }
+    return (dist <= 25);
+};
+
+Enemy.prototype.get_mothership_collision = function() {
+    var same_x = (this.x > Mothership.x - this.offset) && (this.x < Mothership.x + 75 + this.offset);
+    var same_y = (this.y > Mothership.y - this.offset) && (this.y < Mothership.y + 75 + this.offset);
     
-    if (dist_x <= this.offset) { return true; }
-    if (dist_y <= this.offset) { return true; }
-    
-    var dx = dist_x - this.offset;
-    var dy = dist_y - this.offset;
-    
-    return ((dx * dx + dy * dy) <= (radius * radius));
-}
+    return same_x && same_y;
+};

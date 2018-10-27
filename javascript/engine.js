@@ -1,6 +1,6 @@
 /* ---------------------------- new engine ------------------------------------------ */
 var Engine = (function() {
-    var logging   = true;
+    var logging   = false;
     var debugging = false;
 
     //stores cursor's position from the top left corner; x corresponds to left-right; y corresponds to up-down
@@ -12,16 +12,6 @@ var Engine = (function() {
     var infos_div = create_element("div", "infos");
 
     var click = 0; //click state
-
-    //the div for the game, serves as a background and holds the objects on the game
-    var game_div = (function() {
-        var g = document.createElement('div');
-        var att = document.createAttribute('class');
-        att.value = "game";
-        g.setAttributeNode(att);
-
-        return g;
-    })();
     
     var canvas    = create_element("canvas", "game");
     canvas.width  = window.innerWidth;
@@ -41,7 +31,7 @@ var Engine = (function() {
     //for the game
     var difficulty    = 0; //good luck
     var max_enemies   = 2;
-    var spawn_delay   = 3500; //good luck
+    var spawn_delay   = 1500; //good luck
     var score         = 0; //good luck
     var score_element = create_element("p", "info");
     
@@ -92,25 +82,25 @@ var Engine = (function() {
                 switch (e.keyCode) {
                     case 87:
                     case 38:
-                        Mothership.vector.y = -1;
+                        Mothership.directions.up = true;
                         Engine.log("UP key pressed");
                         break;
 
                     case 83:
                     case 40:
-                        Mothership.vector.y = 1;
+                        Mothership.directions.down = true;
                         Engine.log("DOWN key pressed");
                         break;
-
+                        
                     case 65:
                     case 37:
-                        Mothership.vector.x = -1
+                        Mothership.directions.left = true;
                         Engine.log("LEFT key pressed");
                         break;
 
                     case 68:
                     case 39:
-                        Mothership.vector.x = 1;
+                        Mothership.directions.right = true;
                         Engine.log("RIGHT key pressed");
                         break;
                 }
@@ -120,16 +110,24 @@ var Engine = (function() {
                 switch (e.keyCode) {
                     case 87:
                     case 38:
+                        Mothership.directions.up = false;
+                        break;
+                        
                     case 83:
                     case 40:
-                        Mothership.vector.y = 0;
+                        Mothership.directions.down = false;
                         break;
+                        
                     case 65:
                     case 37:
+                        Mothership.directions.left = false;
+                        break;
+                        
                     case 68:
                     case 39:
-                        Mothership.vector.x = 0;
+                        Mothership.directions.right = false;
                         break;
+                        
                     case 80: //"P" key, for pausing
                         Engine.toggle_pause();
                         break;
@@ -166,70 +164,6 @@ var Engine = (function() {
                 
                 num_bullets_p.innerHTML = "bullets: " + bullets.length;
             }, 1000);
-        },
-
-        //OLD OLD OLD OLD OLD OLD OLD CRAPPY INEFFICIENT DON'T USE!!!
-        draw_screen: function(lapse) {
-            //animation code below
-            //basically, ask the mothership, the shooters, each bullet and each enemy where it should be.
-            //draw them there.
-            //if they are outside the windows, don't draw them.
-
-            //clear the screen first
-            game_div.innerHTML = "";
-
-            //draw the mothership
-            Mothership.get_new_position(lapse);
-            var m_ship = create_element("div", "mothership");
-            m_ship.style.top = Mothership.y + "px";
-            m_ship.style.left = Mothership.x + "px";
-            game_div.appendChild(m_ship);
-
-            //filter out the shooters that aren't active
-            shooters = shooters.filter(function(shooter) { return shooter.active; });
-            //draw the remaining ones; sorry for using "with"
-            shooters.forEach(function(shooter) {
-                with (shooter) {
-                    get_new_position(lapse);
-                
-                    var shooter_elt        = create_element("div", "shooter");
-                    shooter_elt.style.top  = y + "px";
-                    shooter_elt.style.left = x + "px";
-
-                    game_div.appendChild(shooter_elt);
-                    
-                    if (loaded && click % 2 == 1) {
-                        bullets.push(fire());
-                    }
-                }
-            });
-            
-            //do the same thing with bullets
-            bullets = bullets.filter(function(bullet) {return bullet.active;});
-            bullets.forEach(function(bullet) {
-                with (bullet) {
-                    get_new_position(lapse);
-                    var bullet_elt        = create_element("div", "bullet");
-                    bullet_elt.style.top  = y + "px";
-                    bullet_elt.style.left = x + "px";
-                    
-                    game_div.appendChild(bullet_elt);
-                }
-            });
-            
-            //... and the same thing for enemies
-            enemies = enemies.filter(function(enemy) {return enemy.active;});
-            enemies.forEach(function(enemy) {
-                with (enemy) {
-                    get_new_position(lapse);
-                    
-                    var enemy_elt        = create_element("div", "enemy");
-                    enemy_elt.style.top  = y + "px";
-                    enemy_elt.style.left = x + "px";
-                    
-                    game_div.appendChild(enemy_elt);
-                }
-            });
         },
         
         draw_canvas: function(lapse) {
@@ -323,6 +257,8 @@ var Engine = (function() {
         end_game: function() {
             //end the game
             Engine.toggle_pause();
+            Engine.log("score: " + score);
+            Engine.log("player has lost.");
         },
         
         //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
@@ -337,7 +273,7 @@ var Engine = (function() {
             difficulty = 1 - ( 1 / score);
             Engine.log("difficulty now: " + difficulty);
             
-            spawn_delay = Math.floor(3500 / difficulty);
+            spawn_delay = Math.floor(1500 / difficulty || 3500);
             Engine.log("spawn delay now: " + spawn_delay);
         },
         
