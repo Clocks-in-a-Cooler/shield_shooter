@@ -3,6 +3,11 @@ var Mothership = (function() {
         x: 0,
         y: 0,
     };
+    
+    var vector = {
+        x: 0,
+        y: 0,
+    };
 
     var offset = 37.5;
 
@@ -17,8 +22,15 @@ var Mothership = (function() {
         },
 
         get_new_position: function(lapse) {
-            pos.x += this.vector.x * lapse * speed;
-            pos.y += this.vector.y * lapse * speed;
+            vector.x = 0; vector.y = 0; //reset the vector
+            
+            vector.y += (this.directions.up ? -1 : 0);
+            vector.y += (this.directions.down ? 1 : 0);
+            vector.x += (this.directions.left ? -1 : 0);
+            vector.x += (this.directions.right ? 1 : 0);
+            
+            pos.x += vector.x * lapse * speed;
+            pos.y += vector.y * lapse * speed;
 
             //limit the mothership at the edges of the screen
             pos.x = Math.min(Engine.game_area_x - offset, Math.max(offset, pos.x));
@@ -26,8 +38,13 @@ var Mothership = (function() {
         },
 
         has_room: function(num) { return (num < maximum_shooters); },
-
-        vector: {x: 0, y: 0,},
+        
+        directions: {
+            up:    false,
+            down:  false,
+            left:  false,
+            right: false,
+        },
         
         collision: function() {
             if (!Engine.invicibility) {

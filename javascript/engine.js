@@ -41,7 +41,7 @@ var Engine = (function() {
     //for the game
     var difficulty    = 0; //good luck
     var max_enemies   = 2;
-    var spawn_delay   = 3500; //good luck
+    var spawn_delay   = 1500; //good luck
     var score         = 0; //good luck
     var score_element = create_element("p", "info");
     
@@ -92,25 +92,25 @@ var Engine = (function() {
                 switch (e.keyCode) {
                     case 87:
                     case 38:
-                        Mothership.vector.y = -1;
+                        Mothership.directions.up = true;
                         Engine.log("UP key pressed");
                         break;
 
                     case 83:
                     case 40:
-                        Mothership.vector.y = 1;
+                        Mothership.directions.down = true;
                         Engine.log("DOWN key pressed");
                         break;
-
+                        
                     case 65:
                     case 37:
-                        Mothership.vector.x = -1
+                        Mothership.directions.left = true;
                         Engine.log("LEFT key pressed");
                         break;
 
                     case 68:
                     case 39:
-                        Mothership.vector.x = 1;
+                        Mothership.directions.right = true;
                         Engine.log("RIGHT key pressed");
                         break;
                 }
@@ -120,16 +120,24 @@ var Engine = (function() {
                 switch (e.keyCode) {
                     case 87:
                     case 38:
+                        Mothership.directions.up = false;
+                        break;
+                        
                     case 83:
                     case 40:
-                        Mothership.vector.y = 0;
+                        Mothership.directions.down = false;
                         break;
+                        
                     case 65:
                     case 37:
+                        Mothership.directions.left = false;
+                        break;
+                        
                     case 68:
                     case 39:
-                        Mothership.vector.x = 0;
+                        Mothership.directions.right = false;
                         break;
+                        
                     case 80: //"P" key, for pausing
                         Engine.toggle_pause();
                         break;
@@ -337,7 +345,7 @@ var Engine = (function() {
             difficulty = 1 - ( 1 / score);
             Engine.log("difficulty now: " + difficulty);
             
-            spawn_delay = Math.floor(3500 / difficulty);
+            spawn_delay = Math.floor(1500 / difficulty || 3500);
             Engine.log("spawn delay now: " + spawn_delay);
         },
         
