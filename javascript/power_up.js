@@ -37,8 +37,30 @@ function generate_power_up() {
 function Power_up(power_up, x, y, v_x, v_y) {
     this.power_up  = power_up;
     this.life_time = 3500;
-    this.active    = false;
+    this.active    = true;
     this.caught    = false;
+    
+    this.sprite = (function() {
+        switch (power_up) {
+            case "rapid fire":
+                return Assets.rapid_fire;
+                break;
+            case "bouncing bullets":
+                return Assets.bouncing_bullets;
+                break;
+            case "piercing shots":
+                return Assets.piercing_shots;
+                break;
+            case "invincibility":
+                return Assets.invincibility;
+                break;
+            case "fragile enemies":
+                return Assets.fragile_enemies;
+                break;
+            default:
+                Engine.log("invalid name for powerup");
+        }
+    })();
     
     this.x       = x;
     this.y       = y;
@@ -46,13 +68,63 @@ function Power_up(power_up, x, y, v_x, v_y) {
     this.v_y     = v_y;
     this.offset  = 15;
     this.bounces = 10;
-    this.speed   = 0.2;
+    this.speed   = 0.35;
 }
 
 Power_up.prototype.get_new_position = function(lapse) {
+    this.x += lapse * this.v_x * this.speed;
+    this.y += lapse * this.v_y * this.speed;
     
+    /*
+    if (this.bounces == 0) {
+        this.destroy_at_edge();
+    } else {
+        this.bounce_at_edge();
+    }
+    */
+    
+    this.bounce_at_edge();
+};
+
+Power_up.prototype.draw = function(context) {
+    context.drawImage(this.sprite, this.x - 15, this.y - 15);
 };
 
 Power_up.prototype.bounce_at_edge = function() {
-    this.bounces++;
+    var bounced = false;
+    
+    //bouncing ability
+    if (this.x <= 0 && this.v_x < 0) {
+        this.v_x = -this.v_x;
+        bounced  = true;
+    }
+    
+    if (this.y <= 0 && this.v_y < 0) {
+        this.v_y = -this.v_y;
+        bounced  = true;
+    }
+    
+    if (this.x >= Engine.game_area_x - 30 && this.v_x > 0) {
+        this.v_x = -this.v_x;
+        bounced  = true;
+    }
+    
+    if (this.y >= Engine.game_area_y - 30 && this.v_y > 0) {
+        this.v_y = -this.v_y;
+        bounced  = true;
+    }
+    
+    if (bounced == true) {
+        this.bounces--;
+    }
+};
+
+Power_up.prototype.destroy_at_edge = function() {
+    if (this.x <= 0 || this.x >= Engine.game_area_x - 30) {
+        //this.active = false;
+    }
+    
+    if (this.y <= 0 || this.y >= Engine.game_area_y - 30) {
+        this.active = false;
+    }
 };

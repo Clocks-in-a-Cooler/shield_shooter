@@ -20,7 +20,11 @@ var Assets = (function() {
     var enemy      = create_image("pics/enemy.png");
     var weak_enemy = create_image("pics/enemy_weak.png");
     
-    var rapid_fire = create_image("pics/powerup_rapid_fire.png");
+    var rapid_fire       = create_image("pics/powerup_rapid_fire.png");
+    var bouncing_bullets = create_image("pics/powerup_bouncing_bullets.png");
+    var piercing_shots   = create_image("pics/powerup_piercing_shots.png");
+    var invincibility    = create_image("pics/powerup_invincibility.png");
+    var fragile_enemies  = create_image("pics/powerup_fragile_enemies.png");
     
     //object to hold all of the assets
     return {
@@ -37,5 +41,11 @@ var Assets = (function() {
         
         get enemy() { return enemy; },
         get weak_enemy() {return enemy_weak;},
+        
+        get rapid_fire() { return rapid_fire; },
+        get bouncing_bullets() { return bouncing_bullets; },
+        get piercing_shots() { return piercing_shots; },
+        get invincibility() { return invincibility; },
+        get fragile_enemies() { return fragile_enemies; },
     };
 })();

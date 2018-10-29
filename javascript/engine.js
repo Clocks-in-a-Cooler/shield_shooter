@@ -262,6 +262,10 @@ var Engine = (function() {
             enemies.push(enemy || new Enemy(0, 0, Math.sqrt(0.5), Math.sqrt(0.5)));
         },
         
+        add_power_up: function(power_up) {
+            objects.push(power_up || generate_power_up());
+        },
+        
         start_game: function() {
             for (var a = 0; a < 2 * Math.PI; a += 0.25 * Math.PI) {
                 Engine.add_shooter(new Shooter(Mothership.x, Mothership.y, a));
@@ -410,6 +414,8 @@ var Engine = (function() {
         get bullets() {return bullets;},
         
         get enemies() {return enemies;},
+        
+        get objects() { return objects; },
         
         get score() {return score;},
         
