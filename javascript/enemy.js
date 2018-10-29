@@ -12,21 +12,10 @@ Enemy.prototype.get_new_position = function(lapse) {
     this.x += lapse * this.v_x * this.speed;
     this.y += lapse * this.v_y * this.speed;
     
-    //bouncing ability
-    if (this.x <= 0 && this.v_x < 0) {
-        this.v_x = -this.v_x;
-    }
-    
-    if (this.y <= 0 && this.v_y < 0) {
-        this.v_y = -this.v_y;
-    }
-    
-    if (this.x >= Engine.game_area_x - 25 && this.v_x > 0) {
-        this.v_x = -this.v_x;
-    }
-    
-    if (this.y >= Engine.game_area_y - 25 && this.v_y > 0) {
-        this.v_y = -this.v_y;
+    if (Engine.fragile_enemies) {
+        this.destroy_at_edge();
+    } else {
+        this.bounce_at_edge();
     }
     
     var b         = this;
@@ -68,7 +57,9 @@ Enemy.prototype.get_new_position = function(lapse) {
 }
 
 Enemy.prototype.draw = function(context) {
-    context.drawImage(Assets.enemy, (this.x - this.offset), (this.y - this.offset));
+    //if the powerup for fragile enemies is on, then draw the "enemy weak" image
+    var sprite = Engine.fragile_enemies ? Assets.enemy_weak : Assets.enemy;
+    context.drawImage(sprite, (this.x - this.offset), (this.y - this.offset));
 };
 
 //getting the object collision between a circle and a square is hard, okay?
@@ -84,4 +75,33 @@ Enemy.prototype.get_mothership_collision = function() {
     var same_y = (this.y > Mothership.y - this.offset) && (this.y < Mothership.y + 75 + this.offset);
     
     return same_x && same_y;
+};
+
+Enemy.prototype.bounce_at_edge = function() {
+    //bouncing ability
+    if (this.x <= 0 && this.v_x < 0) {
+        this.v_x = -this.v_x;
+    }
+    
+    if (this.y <= 0 && this.v_y < 0) {
+        this.v_y = -this.v_y;
+    }
+    
+    if (this.x >= Engine.game_area_x - 25 && this.v_x > 0) {
+        this.v_x = -this.v_x;
+    }
+    
+    if (this.y >= Engine.game_area_y - 25 && this.v_y > 0) {
+        this.v_y = -this.v_y;
+    }
+};
+
+Enemy.prototype.destroy_at_edge = function() {
+    if (this.x <= 0 || this.x >= Engine.game_area_x - 25) {
+        this.active = false;
+    }
+    
+    if (this.y <= 0 || this.y >= Engine.game_area_y - 25) {
+        this.active = false;
+    }
 };

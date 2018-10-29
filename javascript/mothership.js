@@ -13,7 +13,7 @@ var Mothership = (function() {
 
     var maximum_shooters = 8;
     var angles           = [0, 0.25 * Math.PI, 0.5 * Math.PI, 0.75 * Math.PI, Math.PI, 1.25 * Math.PI, 1.5 * Math.PI, 1.75 * Math.PI, 2 * Math.PI];
-    var speed            = 0.3;
+    var speed            = 0.25;
 
     return {
         init: function() {
