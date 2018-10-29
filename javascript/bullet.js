@@ -1,7 +1,23 @@
 function Bullet(x, y, cx, cy) {
     this.x = x;
     this.y = y;
+    
     this.active = true;
+    this.sprite = (function() {
+        if (Engine.piercing_shots) {
+            return Assets.plasma_bullet;
+        }
+        
+        if (Engine.bouncing_bullets) {
+            return Assets.bouncy_bullet;
+        }
+        
+        if (Engine.rapid_fire) {
+            return Assets.fast_bullet;
+        }
+        
+        return Assets.bullet;
+    })();
 
     this.vector = this.get_vector(x, y, cx, cy);
     this.speed  = (Engine.rapid_fire ? 0.7 : 0.3);
@@ -46,7 +62,7 @@ Bullet.prototype.get_new_position = function(lapse) {
 };
 
 Bullet.prototype.draw = function(context) {
-    context.drawImage(Assets.bullet, (this.x - this.offset), (this.y - this.offset));
+    context.drawImage(this.sprite, (this.x - this.offset), (this.y - this.offset));
 };
 
 //also add something to detect collision, and deactivate the bullet

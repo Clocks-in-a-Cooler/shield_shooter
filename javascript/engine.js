@@ -21,7 +21,7 @@ var Engine = (function() {
     //state of the keys are stored in MOTHERSHIP
 
     //to store stuff
-    var shooters = [], bullets = [], enemies = [];
+    var shooters = [], bullets = [], enemies = [], objects = [];
 
     //for animation
     var last_time  = null, lapse = 0;
@@ -176,8 +176,11 @@ var Engine = (function() {
             cx.clearRect(0, 0, Engine.game_area_x, Engine.game_area_y);
             
             //draw the background
+            this.draw_background(cx);
+            /*
             cx.fillStyle = "dimgray";
             cx.fillRect(0, 0, Engine.game_area_x, Engine.game_area_y);
+            */
             
             //draw the mothership
             Mothership.get_new_position(lapse);
@@ -210,8 +213,25 @@ var Engine = (function() {
                 with (enemy) {
                     get_new_position(lapse);
                     draw(cx);
-                };
+                }
             });
+            
+            //I'm just repeating myself at this point. why!?
+            objects = objects.filter(function(object) { return object.active; });
+            objects.forEach(function(object) {
+                with (object) {
+                    get_new_position(lapse);
+                    draw(cx);
+                }
+            });
+        },
+        
+        draw_background: function(context) {
+            for (var y = 0; y < Engine.game_area_y; y += 128) {
+                for (var x = 0; x < Engine.game_area_x; x += 128) {
+                    context.drawImage(Assets.background, x, y);
+                }
+            }
         },
         
         animate: function(time) {
@@ -235,12 +255,15 @@ var Engine = (function() {
         },
 
         add_shooter: function(shooter) {
-            //it will only support one, for now
             shooters.push(shooter || new Shooter(Mothership.x, Mothership.y, 0));
         },
         
         add_enemy: function(enemy) {
             enemies.push(enemy || new Enemy(0, 0, Math.sqrt(0.5), Math.sqrt(0.5)));
+        },
+        
+        add_power_up: function(power_up) {
+            objects.push(power_up || generate_power_up());
         },
         
         start_game: function() {
@@ -391,6 +414,8 @@ var Engine = (function() {
         get bullets() {return bullets;},
         
         get enemies() {return enemies;},
+        
+        get objects() { return objects; },
         
         get score() {return score;},
         

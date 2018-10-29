@@ -39,7 +39,9 @@ Shooter.prototype.get_new_position = function(lapse) {
 };
 
 Shooter.prototype.draw = function(context) {
-    context.drawImage(Assets.shooter, this.x, this.y);
+    var sprite = (Engine.piercing_shots || Engine.rapid_fire) ? Assets.aggressive_shooter : Assets.shooter;
+    
+    context.drawImage(sprite, this.x, this.y);
 };
 
 Shooter.prototype.collision = function() {
