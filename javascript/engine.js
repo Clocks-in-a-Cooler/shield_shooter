@@ -38,8 +38,8 @@ var Engine = (function() {
     //powerups
     var rapid_fire       = true;
     var bouncing_bullets = true;
-    var piercing_shots   = false;
-    var invincibility    = false;
+    var piercing_shots   = true;
+    var invincibility    = true;
     var fragile_enemies  = false;
     
     //each powerup lasts for 60 seconds. enjoy it while you can!
