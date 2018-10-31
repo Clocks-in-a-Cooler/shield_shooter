@@ -8,6 +8,7 @@ var Assets = (function() {
     
     var mothership = create_image("pics/mothership.png");
     var background = create_image("pics/background.png");
+    var crosshair  = create_image("pics/crosshair.png");
 
     var shooter            = create_image("pics/shooter.png");
     var aggressive_shooter = create_image("pics/shooter_aggressive.png");
@@ -30,6 +31,7 @@ var Assets = (function() {
     return {
         get mothership() { return mothership; },
         get background() { return background; },
+        get crosshair()  { return crosshair; },
         
         get shooter() { return shooter; },
         get aggressive_shooter() { return aggressive_shooter; },

@@ -224,6 +224,8 @@ var Engine = (function() {
                     draw(cx);
                 }
             });
+            
+            this.draw_crosshair(cx);
         },
         
         draw_background: function(context) {
@@ -232,6 +234,10 @@ var Engine = (function() {
                     context.drawImage(Assets.background, x, y);
                 }
             }
+        },
+        
+        draw_crosshair: function(context) {
+            context.drawImage(Assets.crosshair, cursor.x - 15, cursor.y - 15);
         },
         
         animate: function(time) {
