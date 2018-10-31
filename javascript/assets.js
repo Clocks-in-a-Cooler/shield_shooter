@@ -40,7 +40,7 @@ var Assets = (function() {
         get bouncy_bullet() { return bouncy_bullet; },
         
         get enemy() { return enemy; },
-        get weak_enemy() {return enemy_weak;},
+        get weak_enemy() {return weak_enemy;},
         
         get rapid_fire() { return rapid_fire; },
         get bouncing_bullets() { return bouncing_bullets; },
