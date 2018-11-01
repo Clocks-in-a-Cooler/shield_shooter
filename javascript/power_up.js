@@ -75,13 +75,11 @@ Power_up.prototype.get_new_position = function(lapse) {
     this.x += lapse * this.v_x * this.speed;
     this.y += lapse * this.v_y * this.speed;
     
-    /*
-    if (this.bounces == 0) {
-        this.destroy_at_edge();
-    } else {
-        this.bounce_at_edge();
+    if (this.get_mothership_collision()) {
+        Engine.log(this.power_up + "powerup picked up...");
+        Engine.activate_power_up(this.power_up);
+        this.active = false;
     }
-    */
     
     this.bounce_at_edge();
 };
@@ -91,40 +89,28 @@ Power_up.prototype.draw = function(context) {
 };
 
 Power_up.prototype.bounce_at_edge = function() {
-    var bounced = false;
     
     //bouncing ability
     if (this.x <= 0 && this.v_x < 0) {
         this.v_x = -this.v_x;
-        bounced  = true;
     }
     
     if (this.y <= 0 && this.v_y < 0) {
         this.v_y = -this.v_y;
-        bounced  = true;
     }
     
     if (this.x >= Engine.game_area_x - 30 && this.v_x > 0) {
         this.v_x = -this.v_x;
-        bounced  = true;
     }
     
     if (this.y >= Engine.game_area_y - 30 && this.v_y > 0) {
         this.v_y = -this.v_y;
-        bounced  = true;
-    }
-    
-    if (bounced == true) {
-        this.bounces--;
     }
 };
 
-Power_up.prototype.destroy_at_edge = function() {
-    if (this.x <= 0 || this.x >= Engine.game_area_x - 30) {
-        //this.active = false;
-    }
+Power_up.prototype.get_mothership_collision = function() {
+    var same_x = (this.x > Mothership.x - this.offset) && (this.x < Mothership.x + 75 + this.offset);
+    var same_y = (this.y > Mothership.y - this.offset) && (this.y < Mothership.y + 75 + this.offset);
     
-    if (this.y <= 0 || this.y >= Engine.game_area_y - 30) {
-        this.active = false;
-    }
+    return same_x && same_y;
 };
