@@ -47,13 +47,14 @@ var Mothership = (function() {
         },
         
         collision: function() {
-            if (!Engine.invicibility) {
+            if (!Engine.invincibility) {
                 Engine.end_game();
             }
         },
         
         draw: function(context) {
-            context.drawImage(Assets.mothership, pos.x - offset, pos.y - offset);
+            var sprite = Engine.invincibility ? Assets.invincible_mothership : Assets.mothership;
+            context.drawImage(sprite, pos.x - offset, pos.y - offset);
         },
 
         get x() { return pos.x - offset;},

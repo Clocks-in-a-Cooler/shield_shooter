@@ -217,13 +217,15 @@ var Engine = (function() {
             });
             
             //I'm just repeating myself at this point. why!?
-            objects = objects.filter(function(object) { return object.active; });
+            objects = objects.filter(function(object) { return object.active;});
             objects.forEach(function(object) {
                 with (object) {
                     get_new_position(lapse);
                     draw(cx);
                 }
             });
+            
+            this.draw_crosshair(cx);
         },
         
         draw_background: function(context) {
@@ -232,6 +234,10 @@ var Engine = (function() {
                     context.drawImage(Assets.background, x, y);
                 }
             }
+        },
+        
+        draw_crosshair: function(context) {
+            context.drawImage(Assets.crosshair, cursor.x - 15, cursor.y - 15);
         },
         
         animate: function(time) {
@@ -298,6 +304,11 @@ var Engine = (function() {
             
             spawn_delay = Math.floor(1500 / difficulty || 3500);
             Engine.log("spawn delay now: " + spawn_delay);
+            
+            //additional processing
+            if (score > 0 && score % 20 == 0 && Engine.objects.length == 0) {
+                Engine.objects.push(generate_power_up());
+            }
         },
         
         add_score: function() { score = score + 1; this.update_score();},

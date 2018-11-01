@@ -45,6 +45,10 @@ Shooter.prototype.draw = function(context) {
     var sprite = (Engine.piercing_shots || Engine.rapid_fire) ? Assets.aggressive_shooter : Assets.shooter;
     
     context.drawImage(sprite, this.x, this.y);
+    
+    if (Engine.invincibility) {
+        context.drawImage(Assets.shooter_invincibility, this.x - 2.5, this.y - 2.5);
+    }
 };
 
 Shooter.prototype.collision = function() {

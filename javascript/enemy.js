@@ -58,7 +58,7 @@ Enemy.prototype.get_new_position = function(lapse) {
 
 Enemy.prototype.draw = function(context) {
     //if the powerup for fragile enemies is on, then draw the "enemy weak" image
-    var sprite = Engine.fragile_enemies ? Assets.enemy_weak : Assets.enemy;
+    var sprite = Engine.fragile_enemies ? Assets.weak_enemy : Assets.enemy;
     context.drawImage(sprite, (this.x - this.offset), (this.y - this.offset));
 };
 
