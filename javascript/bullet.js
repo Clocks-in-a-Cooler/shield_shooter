@@ -33,6 +33,9 @@ Bullet.prototype.get_vector = function(start_x, start_y, end_x, end_y) {
     if (isNaN(vx) || isNaN(vy)) {
         this.active = false;
     }
+    
+    vx = vx + (Math.random() - 0.5) * (Engine.rapid_fire ? 0.125 : 0.03125);
+    vy = vy + (Math.random() - 0.5) * (Engine.rapid_fire ? 0.125 : 0.03125);
 
     return {
         x: vx,

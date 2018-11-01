@@ -6,11 +6,14 @@ var Assets = (function() {
         return img;
     }
     
-    var mothership = create_image("pics/mothership.png");
-    var background = create_image("pics/background.png");
+    var mothership            = create_image("pics/mothership.png");
+    var invincible_mothership = create_image("pics/mothership_invincible.png");
+    var background            = create_image("pics/background.png");
+    var crosshair             = create_image("pics/crosshair.png");
 
-    var shooter            = create_image("pics/shooter.png");
-    var aggressive_shooter = create_image("pics/shooter_aggressive.png");
+    var shooter               = create_image("pics/shooter.png");
+    var aggressive_shooter    = create_image("pics/shooter_aggressive.png");
+    var shooter_invincibility = create_image("pics/effect_invincibility_shooter.png");
 
     var bullet        = create_image("pics/bullet.png");
     var plasma_bullet = create_image("pics/plasma_bullet.png");
@@ -29,10 +32,13 @@ var Assets = (function() {
     //object to hold all of the assets
     return {
         get mothership() { return mothership; },
+        get invincible_mothership() { return invincible_mothership; },
         get background() { return background; },
+        get crosshair()  { return crosshair; },
         
         get shooter() { return shooter; },
         get aggressive_shooter() { return aggressive_shooter; },
+        get shooter_invincibility() { return shooter_invincibility; },
         
         get bullet() { return bullet; },
         get plasma_bullet() { return plasma_bullet; },
@@ -40,7 +46,7 @@ var Assets = (function() {
         get bouncy_bullet() { return bouncy_bullet; },
         
         get enemy() { return enemy; },
-        get weak_enemy() {return enemy_weak;},
+        get weak_enemy() {return weak_enemy;},
         
         get rapid_fire() { return rapid_fire; },
         get bouncing_bullets() { return bouncing_bullets; },
