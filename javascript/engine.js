@@ -65,7 +65,7 @@ var Engine = (function() {
             addEventListener("mousedown", function() {
                 if (click % 2 == 0) {
                     click = click + 1;
-                    Engine.log("a mouse click at " + cursor.x + ", " + cursor.y);
+                    //Engine.log("a mouse click at " + cursor.x + ", " + cursor.y);
                 }
             });
 
@@ -83,25 +83,25 @@ var Engine = (function() {
                     case 87:
                     case 38:
                         Mothership.directions.up = true;
-                        Engine.log("UP key pressed");
+                        //Engine.log("UP key pressed");
                         break;
 
                     case 83:
                     case 40:
                         Mothership.directions.down = true;
-                        Engine.log("DOWN key pressed");
+                        //Engine.log("DOWN key pressed");
                         break;
                         
                     case 65:
                     case 37:
                         Mothership.directions.left = true;
-                        Engine.log("LEFT key pressed");
+                        //Engine.log("LEFT key pressed");
                         break;
 
                     case 68:
                     case 39:
                         Mothership.directions.right = true;
-                        Engine.log("RIGHT key pressed");
+                        //Engine.log("RIGHT key pressed");
                         break;
                 }
             });
@@ -286,24 +286,24 @@ var Engine = (function() {
         end_game: function() {
             //end the game
             Engine.toggle_pause();
-            Engine.log("score: " + score);
-            Engine.log("player has lost.");
+            //Engine.log("score: " + score);
+            //Engine.log("player has lost.");
         },
         
         //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
         update_score: function() {
             score_element.innerHTML = "score: " + score;
             
-            Engine.log("updating score... and everything else...");
+            //Engine.log("updating score... and everything else...");
             
             max_enemies = score + 1;
-            Engine.log("max enemies now: " + max_enemies);
+            //Engine.log("max enemies now: " + max_enemies);
             
             difficulty = 1 - ( 1 / score);
-            Engine.log("difficulty now: " + difficulty);
+            //Engine.log("difficulty now: " + difficulty);
             
             spawn_delay = Math.floor(1500 / difficulty || 3500);
-            Engine.log("spawn delay now: " + spawn_delay);
+            //Engine.log("spawn delay now: " + spawn_delay);
             
             //additional processing
             if (score > 0 && score % 20 == 0 && Engine.objects.length == 0) {
@@ -317,47 +317,47 @@ var Engine = (function() {
             switch (power_up) {
                 //debug! sorry for the long base statements.
                 case "rapid fire":
-                    Engine.log("activating 'rapid fire' powerup...");
+                    //Engine.log("activating 'rapid fire' powerup...");
                     rapid_fire = true;
                     setTimeout(function() {
                         rapid_fire = false;
-                        Engine.log("deactivating 'rapid fire' powerup...");
+                        //Engine.log("deactivating 'rapid fire' powerup...");
                     }, power_up_duration);
                     break;
                 case "bouncing bullets":
-                    Engine.log("activating 'bouncing bullets' powerup...");
+                    //Engine.log("activating 'bouncing bullets' powerup...");
                     bouncing_bullets = true;
                     setTimeout(function() {
                         bouncing_bullets = false;
-                        Engine.log("deactivating 'bouncing bullets' powerup...");
+                        //Engine.log("deactivating 'bouncing bullets' powerup...");
                     }, power_up_duration);
                     break;
                 case "piercing shots": 
-                    Engine.log("activating 'piercing shots' powerup...");
+                    //Engine.log("activating 'piercing shots' powerup...");
                     piercing_shots = true;
                     setTimeout(function() {
                         piercing_shots = false;
-                        Engine.log("deactivating 'piercing shots' powerup...");
+                        //Engine.log("deactivating 'piercing shots' powerup...");
                     }, power_up_duration);
                     break;
                 case "invincibility":
-                    Engine.log("activating 'invincibility' powerup...");
+                    //Engine.log("activating 'invincibility' powerup...");
                     invincibility = true;
                     setTimeout(function() {
                         invincibility = false;
-                        Engine.log("deactivating 'invincibility' powerup...");
+                        //Engine.log("deactivating 'invincibility' powerup...");
                     }, power_up_duration);
                     break;
                 case "fragile enemies":
-                    Engine.log("activating 'fragile enemies' powerup...");
+                    //Engine.log("activating 'fragile enemies' powerup...");
                     fragile_enemies = true;
                     setTimeout(function() {
                         fragile_enemies = false;
-                        Engine.log("deactivating 'fragile enemies' powerup...");
+                        //Engine.log("deactivating 'fragile enemies' powerup...");
                     }, power_up_duration);
                     break;
                 default:
-                    Engine.log("unrecognized powerup '" + power_up + "' -- what is this?");
+                    //Engine.log("unrecognized powerup '" + power_up + "' -- what is this?");
             }
             
             //all that's missing is a function for creating powerups!
@@ -396,10 +396,10 @@ var Engine = (function() {
         
         spawn_enemies: function() {
             if (Engine.enemies.length < max_enemies) {
-                Engine.log("creating enemy...");
+                //Engine.log("creating enemy...");
                 Engine.create_enemy();
             } else {
-                Engine.log("max reached! enemy not created!");
+                //Engine.log("max reached! enemy not created!");
             }
             
             setTimeout(Engine.spawn_enemies, spawn_delay);

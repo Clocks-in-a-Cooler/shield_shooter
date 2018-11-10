@@ -58,7 +58,7 @@ function Power_up(power_up, x, y, v_x, v_y) {
                 return Assets.fragile_enemies;
                 break;
             default:
-                Engine.log("invalid name for powerup");
+                //Engine.log("invalid name for powerup");
         }
     })();
     
@@ -76,7 +76,7 @@ Power_up.prototype.get_new_position = function(lapse) {
     this.y += lapse * this.v_y * this.speed;
     
     if (this.get_mothership_collision()) {
-        Engine.log(this.power_up + "powerup picked up...");
+        //Engine.log(this.power_up + "powerup picked up...");
         Engine.activate_power_up(this.power_up);
         this.active = false;
     }
