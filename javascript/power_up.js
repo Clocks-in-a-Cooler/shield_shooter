@@ -34,9 +34,15 @@ function generate_power_up() {
     return new Power_up(power_up, x, y, v_x, v_y);
 }
 
+function get_horizontal_offset(text, middle) {
+    //each character is about 21 pixels wide
+    
+    return Math.trunc(middle - (text.length / 2) * 12); 
+}
+
 function Power_up(power_up, x, y, v_x, v_y) {
     this.power_up  = power_up;
-    this.life_time = 3500;
+    this.life_time = 2500;
     this.active    = true;
     this.caught    = false;
     
@@ -62,30 +68,52 @@ function Power_up(power_up, x, y, v_x, v_y) {
         }
     })();
     
-    this.x       = x;
-    this.y       = y;
-    this.v_x     = v_x;
-    this.v_y     = v_y;
-    this.offset  = 15;
-    this.bounces = 10;
-    this.speed   = 0.35;
+    this.x      = x;
+    this.y      = y;
+    this.v_x    = v_x;
+    this.v_y    = v_y;
+    this.offset = 15;
+    this.speed  = 0.35;
+    
+    this.float_speed = 0.05;
 }
 
 Power_up.prototype.get_new_position = function(lapse) {
+    if (this.caught) {
+        this.life_time -= lapse;
+        
+        if (this.life_time <= 0) {
+            this.active = false;
+        }
+        
+        this.y -= lapse * this.float_speed;
+        return;
+    }
+    
     this.x += lapse * this.v_x * this.speed;
     this.y += lapse * this.v_y * this.speed;
     
     if (this.get_mothership_collision()) {
         Engine.log(this.power_up + "powerup picked up...");
         Engine.activate_power_up(this.power_up);
-        this.active = false;
+        this.caught = true;
     }
     
     this.bounce_at_edge();
 };
 
 Power_up.prototype.draw = function(context) {
-    context.drawImage(this.sprite, this.x - 15, this.y - 15);
+    if (!this.caught) {
+        context.drawImage(this.sprite, this.x - 15, this.y - 15);
+    } else {
+        context.save();
+        
+        //colour code: rgb(255, 255, 254), aka LightYellow
+        context.fillStyle = "rgba(255, 255, 254, " + this.life_time / 2500 + ")";
+        context.font      = "14pt Ubuntu";
+        
+        context.fillText(this.power_up, get_horizontal_offset(this.power_up, this.x), this.y);
+    }
 };
 
 Power_up.prototype.bounce_at_edge = function() {
