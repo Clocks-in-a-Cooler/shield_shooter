@@ -306,7 +306,7 @@ var Engine = (function() {
             Engine.log("spawn delay now: " + spawn_delay);
             
             //additional processing
-            if (score > 0 && score % 20 == 0 && Engine.objects.length == 0) {
+            if (score > 0 && score % 20 == 0) {
                 Engine.objects.push(generate_power_up());
             }
         },
