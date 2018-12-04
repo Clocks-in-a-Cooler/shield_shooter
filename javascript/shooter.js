@@ -10,7 +10,7 @@ function Shooter(x, y, angle) {
     this.cooldown = 500; //in milliseconds
     this.active   = true;
 
-    //Engine.log("a new shooter has been created at " + this.x + ", " + this.y);
+    Engine.log("a new shooter has been created at " + this.x + ", " + this.y);
 }
 
 Shooter.prototype.fire = function(time) {
@@ -20,7 +20,8 @@ Shooter.prototype.fire = function(time) {
         setTimeout(function() {
             s.loaded = true;
         }, (Engine.rapid_fire ? s.cooldown / 5 : s.cooldown));
-		playShooterFX();
+        
+        playShooterFX();
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
 };
