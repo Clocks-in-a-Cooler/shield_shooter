@@ -21,7 +21,7 @@ Shooter.prototype.fire = function(time) {
             s.loaded = true;
         }, (Engine.rapid_fire ? s.cooldown / 5 : s.cooldown));
         
-        playShooterFX();
+        Sound.play_shooter_fx();
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
 };
