@@ -19,7 +19,9 @@ Shooter.prototype.fire = function(time) {
         this.loaded = false;
         setTimeout(function() {
             s.loaded = true;
-        }, (Engine.rapid_fire ? s.cooldown / 3 : s.cooldown));
+        }, (Engine.rapid_fire ? s.cooldown / 5 : s.cooldown));
+        
+        Sound.play_shooter_fx();
         return new Bullet(this.x, this.y, Engine.cursor_x, Engine.cursor_y);
     }
 };

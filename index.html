@@ -19,8 +19,17 @@
                 return e;
             }
         </script>
+		
+		<!-- all the audio + script-->
+		<audio id=OST>
+			<source src="audio/ost/menu_theme.mp3" type="audio/mpeg">
+		</audio>
+		<audio id=ShooterFire>
+			<source src="audio/fx/shooter2.mp3" type="audio/mpeg">
+		</audio>
 
         <!-- load the types first -->
+		<script src="javascript/audio.js"></script>
         <script src="javascript/engine.js"></script>
         <script src="javascript/assets.js"></script>
         <script src="javascript/bullet.js"></script>
@@ -37,11 +46,12 @@
         <br />
         <hr />
         <p>art by <a href="https://github.com/laifrank2002">Frank Lai</a>.</p>
-        
+		
         <script>
             function start() {
                 Engine.init();
                 Engine.start_game();
+				//playOST();
             }
         </script>
     </body>

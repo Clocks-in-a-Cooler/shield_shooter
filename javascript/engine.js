@@ -177,11 +177,7 @@ var Engine = (function() {
             
             //draw the background
             this.draw_background(cx);
-            /*
-            cx.fillStyle = "dimgray";
-            cx.fillRect(0, 0, Engine.game_area_x, Engine.game_area_y);
-            */
-            
+
             //draw the mothership
             Mothership.get_new_position(lapse);
             Mothership.draw(cx);
@@ -359,8 +355,6 @@ var Engine = (function() {
                 default:
                     Engine.log("unrecognized powerup '" + power_up + "' -- what is this?");
             }
-            
-            //all that's missing is a function for creating powerups!
         },
         
         create_enemy: function() {
