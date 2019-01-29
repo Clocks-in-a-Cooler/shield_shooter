@@ -284,6 +284,7 @@ var Engine = (function() {
             Engine.toggle_pause();
             Engine.log("score: " + score);
             Engine.log("player has lost.");
+            alert("game over. score: " + score);
         },
         
         //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
