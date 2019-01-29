@@ -177,11 +177,7 @@ var Engine = (function() {
             
             //draw the background
             this.draw_background(cx);
-            /*
-            cx.fillStyle = "dimgray";
-            cx.fillRect(0, 0, Engine.game_area_x, Engine.game_area_y);
-            */
-            
+
             //draw the mothership
             Mothership.get_new_position(lapse);
             Mothership.draw(cx);
@@ -288,6 +284,7 @@ var Engine = (function() {
             Engine.toggle_pause();
             Engine.log("score: " + score);
             Engine.log("player has lost.");
+            alert("game over. score: " + score);
         },
         
         //updating the score each frame is begging for a system crash, especially on my HP Pavilion g6 from 2012.
@@ -306,7 +303,7 @@ var Engine = (function() {
             Engine.log("spawn delay now: " + spawn_delay);
             
             //additional processing
-            if (score > 0 && score % 20 == 0 && Engine.objects.length == 0) {
+            if (score > 0 && score % 20 == 0) {
                 Engine.objects.push(generate_power_up());
             }
         },
@@ -359,8 +356,6 @@ var Engine = (function() {
                 default:
                     Engine.log("unrecognized powerup '" + power_up + "' -- what is this?");
             }
-            
-            //all that's missing is a function for creating powerups!
         },
         
         create_enemy: function() {

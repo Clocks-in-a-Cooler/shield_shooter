@@ -40,6 +40,14 @@ function get_horizontal_offset(text, middle) {
     return Math.trunc(middle - (text.length / 2) * 12); 
 }
 
+var Power_ups = (function(){
+    //replaces the one with the engine
+    
+    return {
+        get power_up_duration() { return p_u_d; },
+    }
+})();
+
 function Power_up(power_up, x, y, v_x, v_y) {
     this.power_up  = power_up;
     this.life_time = 2500;
